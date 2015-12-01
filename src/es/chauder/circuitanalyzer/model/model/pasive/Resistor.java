@@ -1,9 +1,24 @@
 package es.chauder.circuitanalyzer.model.model.pasive;
 
-import es.chauder.circuitanalyzer.model.model.Device;
-
 /**
  * Created by rchauderlot on 30/11/15.
  */
-public class Resistor extends Device {
+public class Resistor extends PassiveDevice {
+
+    double resistance;
+
+    public Resistor(double resistance) {
+        super();
+        this.resistance = resistance;
+    }
+
+    public double getImpedance(double frequency) {
+        return resistance;
+    }
+
+    public int getNumberOfTerminals() {
+        return 2;
+    }
+
+
 }
