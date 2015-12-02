@@ -1,4 +1,4 @@
-package es.chauder.circuitanalyzer.model.model;
+package es.chauder.circuitanalyzer.model.model.base;
 
 import java.util.List;
 

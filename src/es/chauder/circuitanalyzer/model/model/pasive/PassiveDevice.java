@@ -1,6 +1,6 @@
 package es.chauder.circuitanalyzer.model.model.pasive;
 
-import es.chauder.circuitanalyzer.model.model.Device;
+import es.chauder.circuitanalyzer.model.model.base.Device;
 
 /**
  * Created by rchauderlot on 30/11/15.
