@@ -19,16 +19,8 @@ public class Terminal extends Connector {
         return device;
     }
 
-    public void setDevice(Device device) {
-        this.device = device;
-    }
-
     public int getTerminalIndex() {
         return terminalIndex;
-    }
-
-    public void setTerminalIndex(int terminalIndex) {
-        this.terminalIndex = terminalIndex;
     }
 
     public Wire getWire() {
