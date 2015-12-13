@@ -50,11 +50,15 @@ public class AnalysisTopologyGenerator {
 
             if (w.getTerminals().size() == 0) {
                unUsedWires.add(w);
-            } else if (w.getTerminals().size() == 1 ||
-                    w.getTerminals().size() == 2) {
-                Branch b = generateBranch(w, wiresToBeAnalyzed, devicesToBeAnalyzed);
+            } else if (w.getTerminals().size() == 2) {
+                Branch b = generateBranchFromMidOfBranch(w, wiresToBeAnalyzed, devicesToBeAnalyzed);
                 branches.add(b);
-            } // If there is a wire with more than 2 terminals, its a node, not a single branch but the wire is used. Just remove it.
+            } else { // If there is a wire with more than 2 terminals, its a node, lets analyze all branches.
+                for (Terminal t : w.getTerminals()) {
+                    Branch b = generateBranchFromNode(w, t, wiresToBeAnalyzed, devicesToBeAnalyzed);
+                    branches.add(b);
+                }
+            }
 
             // Every wire classified should be removed.
             wiresToBeAnalyzed.remove(w);
@@ -81,7 +85,17 @@ public class AnalysisTopologyGenerator {
     }
 
 
-    private static Branch generateBranch(Wire wire, List<Wire> wires, List<Device> devices) {
+    private static Branch generateBranchFromNode(Wire wire, Terminal terminal, List<Wire> wires, List<Device> devices) {
+
+        List<Connector> connectors = getNextConnectors(wire, terminal, wires, devices);
+
+        Branch b = new Branch();
+        b.setElements(connectors);
+        return b;
+
+    }
+
+    private static Branch generateBranchFromMidOfBranch(Wire wire, List<Wire> wires, List<Device> devices) {
 
         List<Connector> connectors = new ArrayList<>();
 
@@ -120,27 +134,33 @@ public class AnalysisTopologyGenerator {
 
         while (currentWire != null && currentTerminal != null) {
 
-            // Add the terminal to be analyzed to the list, and mark the device as used
-            connectors.add(currentTerminal);
             Device currentDevice = currentTerminal.getDevice();
-            devices.remove(currentDevice);
-
-            // Go to the other side of the device if any
-            currentTerminal = getNextTerminalFromDevice(currentDevice, currentTerminal);
-            if (currentTerminal != null) {
-
-                // Add that terminal also, and get the new wire
+            if (currentDevice != null && devices.contains(currentDevice)) { // if next device and not analysed
+                // Add the terminal to be analyzed to the list, and mark the device as used
                 connectors.add(currentTerminal);
-                currentWire = currentTerminal.getWire();
+                devices.remove(currentDevice);
 
-                if (currentWire != null) {
+                // Go to the other side of the device if any
+                currentTerminal = getNextTerminalFromDevice(currentDevice, currentTerminal);
+                if (currentTerminal != null && currentTerminal.getWire() != null) {
+
+                    // Add that terminal also, and get the new wire
+                    connectors.add(currentTerminal);
+                    currentWire = currentTerminal.getWire();
+
                     // Remove the wire to the list, and mark it as used
                     connectors.add(currentWire);
-                    wires.remove(currentWire);
 
-                    // Get the terminal to continue analysing if any
-                    currentTerminal = getNextTerminalFromWire(currentWire, currentTerminal);
+                    if (wires.contains(currentWire)) {
+                        wires.remove(currentWire);
+                        // Get the terminal to continue analysing if any
+                        currentTerminal = getNextTerminalFromWire(currentWire, currentTerminal);
+                    } else {
+                        currentTerminal = null;
+                    }
                 }
+            } else {
+                currentTerminal = null;
             }
         }
 

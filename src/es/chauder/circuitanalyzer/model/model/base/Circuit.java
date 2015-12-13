@@ -1,5 +1,6 @@
 package es.chauder.circuitanalyzer.model.model.base;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,8 +24,16 @@ public class Circuit {
         this.wires = wires;
     }
 
-    List<Device> devices;
-    List<Wire> wires;
+    public String getTitle() {
+        return title;
+    }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    List<Device> devices = new ArrayList<>();
+    List<Wire> wires = new ArrayList<>();
+    String title = "";
 
 }
