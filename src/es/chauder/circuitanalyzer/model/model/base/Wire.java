@@ -1,16 +1,18 @@
 package es.chauder.circuitanalyzer.model.model.base;
 
-import com.sun.tools.javac.util.List;
+import java.util.List;
+
+import java.util.ArrayList;
 
 /**
  * Created by rchauderlot on 30/11/15.
  */
 public class Wire extends Connector {
 
-    private List<Device> devices;
+    private List<Terminal> terminals = new ArrayList<Terminal>();
 
-    public List<Device> getDevices() {
-        return devices;
+    public List<Terminal> getTerminals() {
+        return terminals;
     }
 
 }

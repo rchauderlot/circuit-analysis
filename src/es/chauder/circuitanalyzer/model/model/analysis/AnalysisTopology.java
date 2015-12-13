@@ -3,6 +3,7 @@ package es.chauder.circuitanalyzer.model.model.analysis;
 import java.util.List;
 import es.chauder.circuitanalyzer.model.model.base.Circuit;
 import es.chauder.circuitanalyzer.model.model.base.Device;
+import es.chauder.circuitanalyzer.model.model.base.Wire;
 
 import java.util.ArrayList;
 
@@ -51,10 +52,29 @@ public class AnalysisTopology {
         this.isolatedBranches = isolatedBranches;
     }
 
+    public List<Wire> getUnusedWires() {
+        return unusedWires;
+    }
+
+    public void setUnusedWires(List<Wire> unusedWires) {
+        this.unusedWires = unusedWires;
+    }
+
+    public List<Device> getUnusedDevices() {
+        return unusedDevices;
+    }
+
+    public void setUnusedDevices(List<Device> unusedDevices) {
+        this.unusedDevices = unusedDevices;
+    }
+
+
     Circuit circuit;
     List<Branch> branches = new ArrayList<>();
     List<AnalysisGroup> analysisGroups = new ArrayList<AnalysisGroup>();
     List<Branch> deadEndedBranches = new ArrayList<Branch>();
     List<Branch> isolatedBranches = new ArrayList<Branch>();
+    List<Wire> unusedWires = new ArrayList<Wire>();
+    List<Device> unusedDevices = new ArrayList<Device>();
 
 }
