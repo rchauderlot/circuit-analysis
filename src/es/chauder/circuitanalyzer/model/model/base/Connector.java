@@ -6,4 +6,8 @@ package es.chauder.circuitanalyzer.model.model.base;
  * Created by rchauderlot on 2/12/15.
  */
 public class Connector {
+
+    public boolean isLinkedTo(Connector connector) {
+        return equals(connector);
+    }
 }

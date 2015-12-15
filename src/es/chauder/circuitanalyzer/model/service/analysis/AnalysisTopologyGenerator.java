@@ -1,13 +1,8 @@
-package es.chauder.circuitanalyzer.model.service;
+package es.chauder.circuitanalyzer.model.service.analysis;
 
 import es.chauder.circuitanalyzer.model.model.analysis.AnalysisGroup;
-import es.chauder.circuitanalyzer.model.model.base.*;
-import es.chauder.circuitanalyzer.model.model.analysis.Branch;
 import es.chauder.circuitanalyzer.model.model.analysis.AnalysisTopology;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import es.chauder.circuitanalyzer.model.model.base.Circuit;
 
 
 /**
@@ -21,19 +16,13 @@ public class AnalysisTopologyGenerator {
         if (circuit != null) {
             BranchGenerator.generateBranches(topology);
             AnalysisGroupGenerator.generateAnalysisGroups(topology);
-            generateNetworks(topology);
+            for (AnalysisGroup group : topology.getAnalysisGroups()) {
+                NodeGenerator.generateNodes(group);
+                NetworkGenerator.generateNetworks(group);
+            }
         }
         return topology;
     }
 
 
-
-
-    private static void generateNetworks(AnalysisTopology topology) {
-
-
-
-
-
-    }
 }

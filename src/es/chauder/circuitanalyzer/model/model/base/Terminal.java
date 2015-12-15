@@ -30,4 +30,10 @@ public class Terminal extends Connector {
     public void setWire(Wire wire) {
         this.wire = wire;
     }
+
+    public boolean isLinkedTo(Connector connector) {
+
+        return (connector instanceof Terminal && getDevice() != null &&
+                getDevice().equals(((Terminal)connector).getDevice()));
+    }
 }

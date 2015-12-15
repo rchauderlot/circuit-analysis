@@ -36,22 +36,6 @@ public class AnalysisTopology {
         this.analysisGroups = analysisGroups;
     }
 
-    public List<Branch> getDeadEndedBranches() {
-        return deadEndedBranches;
-    }
-
-    public void setDeadEndedBranches(List<Branch> deadEndedBranches) {
-        this.deadEndedBranches = deadEndedBranches;
-    }
-
-    public List<Branch> getIsolatedBranches() {
-        return isolatedBranches;
-    }
-
-    public void setIsolatedBranches(List<Branch> isolatedBranches) {
-        this.isolatedBranches = isolatedBranches;
-    }
-
     public List<Wire> getUnusedWires() {
         return unusedWires;
     }
@@ -70,10 +54,10 @@ public class AnalysisTopology {
 
 
     Circuit circuit;
+
     List<Branch> branches = new ArrayList<>();
     List<AnalysisGroup> analysisGroups = new ArrayList<AnalysisGroup>();
-    List<Branch> deadEndedBranches = new ArrayList<Branch>();
-    List<Branch> isolatedBranches = new ArrayList<Branch>();
+
     List<Wire> unusedWires = new ArrayList<Wire>();
     List<Device> unusedDevices = new ArrayList<Device>();
 

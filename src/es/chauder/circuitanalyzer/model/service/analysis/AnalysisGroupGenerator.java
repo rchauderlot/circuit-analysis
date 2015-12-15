@@ -1,4 +1,4 @@
-package es.chauder.circuitanalyzer.model.service;
+package es.chauder.circuitanalyzer.model.service.analysis;
 
 import es.chauder.circuitanalyzer.model.model.analysis.AnalysisGroup;
 import es.chauder.circuitanalyzer.model.model.analysis.AnalysisTopology;
@@ -53,7 +53,7 @@ public class AnalysisGroupGenerator {
 
         boolean connected = false;
         for (Branch b : group.getBranches()) {
-            if (areBranchesConnected(b, branch)) {
+            if (branch.isConnectedTo(b)) {
                 connected = true;
                 break;
             }
@@ -62,22 +62,6 @@ public class AnalysisGroupGenerator {
 
     }
 
-    private static boolean areBranchesConnected(Branch branch1, Branch branch2) {
-
-
-        Connector branch1Start = branch1.getElements().get(0);
-        Connector branch1End = branch1.getElements().get(branch1.getElements().size() - 1);
-        Connector branch2Start = branch2.getElements().get(0);
-        Connector branch2End = branch2.getElements().get(branch2.getElements().size() - 1);
-
-
-        return (areConnectorsLinked(branch1Start, branch2Start) ||
-                areConnectorsLinked(branch1Start, branch2End) ||
-                areConnectorsLinked(branch1End, branch2Start) ||
-                areConnectorsLinked(branch1End, branch2End));
-
-
-    }
 
     private static boolean areConnectorsLinked(Connector connector1, Connector connector2) {
 

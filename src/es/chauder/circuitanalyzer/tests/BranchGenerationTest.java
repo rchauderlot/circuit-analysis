@@ -6,7 +6,7 @@ import es.chauder.circuitanalyzer.model.model.base.Circuit;
 import es.chauder.circuitanalyzer.model.model.base.Connector;
 import es.chauder.circuitanalyzer.model.model.base.Device;
 import es.chauder.circuitanalyzer.model.model.base.Terminal;
-import es.chauder.circuitanalyzer.model.service.AnalysisTopologyGenerator;
+import es.chauder.circuitanalyzer.model.service.analysis.AnalysisTopologyGenerator;
 import org.testng.annotations.Test;
 
 

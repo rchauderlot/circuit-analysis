@@ -1,4 +1,4 @@
-package es.chauder.circuitanalyzer.model.service;
+package es.chauder.circuitanalyzer.model.service.analysis;
 
 import es.chauder.circuitanalyzer.model.model.analysis.AnalysisGroup;
 import es.chauder.circuitanalyzer.model.model.analysis.AnalysisTopology;

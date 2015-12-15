@@ -32,8 +32,17 @@ public class AnalysisGroup {
         this.nodes = nodes;
     }
 
+    public List<Branch> getOpenBranches() {
+        return openBranches;
+    }
+
+    public void setOpenBranches(List<Branch> openBranches) {
+        this.openBranches = openBranches;
+    }
+
     List<Branch> branches = new ArrayList<>();
     List<Network> networks = new ArrayList<>();
     List<Node> nodes = new ArrayList<>();
 
+    List<Branch> openBranches = new ArrayList<Branch>();
 }

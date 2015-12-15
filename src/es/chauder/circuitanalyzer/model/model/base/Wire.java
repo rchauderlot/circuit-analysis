@@ -15,4 +15,8 @@ public class Wire extends Connector {
         return terminals;
     }
 
+    public boolean isLinkedTo(Connector connector) {
+
+        return connector instanceof Wire && equals(connector);
+    }
 }
