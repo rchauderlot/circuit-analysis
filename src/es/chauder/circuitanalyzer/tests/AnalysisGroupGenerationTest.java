@@ -1,5 +1,6 @@
 package es.chauder.circuitanalyzer.tests;
 
+import es.chauder.circuitanalyzer.model.model.analysis.AnalysisGroup;
 import es.chauder.circuitanalyzer.model.model.analysis.AnalysisTopology;
 import es.chauder.circuitanalyzer.model.model.base.Circuit;
 import es.chauder.circuitanalyzer.model.service.analysis.AnalysisTopologyGenerator;
@@ -65,4 +66,66 @@ public class AnalysisGroupGenerationTest {
 
     }
 
+
+    @Test
+    public void testNumberOfBranchesInGroupsSeriesResistorCircuit() throws Exception {
+
+
+        Circuit circuit1 = SampleCircuitGenerator.generateSeriesResistorCircuit();
+        testNumberOfBranchesInGroups(circuit1);
+
+    }
+
+
+    @Test
+    public void testNumberOfBranchesInGroupsParallelResistorCircuit() throws Exception {
+
+
+        Circuit circuit2 = SampleCircuitGenerator.generateParallelResistorCircuit();
+        testNumberOfBranchesInGroups(circuit2);
+
+
+    }
+    @Test
+    public void testNumberOfBranchesInGroupsSeriesOpenLoopCircuit() throws Exception {
+
+
+        Circuit circuit3 = SampleCircuitGenerator.generateOpenLoopCircuit();
+        testNumberOfBranchesInGroups(circuit3);
+
+
+    }
+    @Test
+    public void testNumberOfBranchesInGroupsIsolatedBranchCircuit() throws Exception {
+
+
+        Circuit circuit4 = SampleCircuitGenerator.generateIsolatedBranchCircuit();
+        testNumberOfBranchesInGroups(circuit4);
+
+
+    }
+
+    @Test
+    public void testNumberOfBranchesInGroupsOpenBranchCircuit() throws Exception {
+
+        Circuit circuit5 = SampleCircuitGenerator.generateOpenBranchCircuit();
+        testNumberOfBranchesInGroups(circuit5);
+
+    }
+
+
+    private void testNumberOfBranchesInGroups(Circuit circuit) throws Exception {
+
+        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit);
+
+        int numberOfBranchesInGroups = 0;
+        for (AnalysisGroup ag : topology.getAnalysisGroups()) {
+            numberOfBranchesInGroups += ag.getBranches().size();
+        }
+
+
+        assert topology.getBranches().size() == numberOfBranchesInGroups;
+
+
+    }
 }

@@ -4,6 +4,8 @@ import es.chauder.circuitanalyzer.model.model.analysis.AnalysisGroup;
 import es.chauder.circuitanalyzer.model.model.analysis.Branch;
 import es.chauder.circuitanalyzer.model.model.analysis.Node;
 import es.chauder.circuitanalyzer.model.model.base.Connector;
+import es.chauder.circuitanalyzer.model.model.base.Terminal;
+import es.chauder.circuitanalyzer.model.model.base.Wire;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +19,17 @@ public class NodeGenerator {
 
         List<Node> nodes = new ArrayList<Node>();
 
-        for (Branch b : analysisGroup.getBranches()) {
+        for (Branch b : analysisGroup.getClosedBranches()) {
 
             Node startNode = createStartNodeOfBranch(nodes, b);
-            nodes.add(startNode);
+            if (startNode != null) {
+                nodes.add(startNode);
+            }
 
             Node endNode = createEndNodeOfBranch(nodes, b);
-            nodes.add(endNode);
+            if (endNode != null) {
+                nodes.add(endNode);
+            }
 
         }
 
@@ -37,10 +43,11 @@ public class NodeGenerator {
 
         Node startNode = generateNodeReusingNodesForBranchConnector(nodes, b, startConnector);
 
-        // Make the link
-        startNode.getBranches().add(b);
-        b.setStart(startNode);
-
+        if (startNode != null) {
+            // Make the link
+            startNode.getBranches().add(b);
+            b.setStart(startNode);
+        }
         return startNode;
     }
 
@@ -50,16 +57,21 @@ public class NodeGenerator {
 
         Node endNode = generateNodeReusingNodesForBranchConnector(nodes, b, endConnector);
 
-        // Make the link
-        endNode.getBranches().add(b);
-        b.setEnd(endNode);
+        if (endNode != null) {
+            // Make the link
+            endNode.getBranches().add(b);
+            b.setEnd(endNode);
+        }
 
         return endNode;
     }
 
     private static Node generateNodeReusingNodesForBranchConnector(List<Node> nodes, Branch b, Connector c) {
         Node node = findAnalyzedNodeLinkedToConnector(nodes, c);
-        if (node == null) {
+        if (node == null &&
+                ((c instanceof Terminal && ((Terminal)c).getDevice() != null &&
+                        ((Terminal)c).getDevice().getTerminals().size() > 2) ||
+                        (c instanceof Wire && ((Wire)c).getTerminals().size() > 2 ))) {
             node = new Node();
             nodes.add(node);
         }

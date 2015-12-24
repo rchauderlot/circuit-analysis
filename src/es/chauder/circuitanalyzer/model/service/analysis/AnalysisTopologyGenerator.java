@@ -17,6 +17,7 @@ public class AnalysisTopologyGenerator {
             BranchGenerator.generateBranches(topology);
             AnalysisGroupGenerator.generateAnalysisGroups(topology);
             for (AnalysisGroup group : topology.getAnalysisGroups()) {
+                OpenClosedBranchSetsGenerator.generateOpenClosedBranchSets(group);
                 NodeGenerator.generateNodes(group);
                 NetworkGenerator.generateNetworks(group);
             }

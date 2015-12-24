@@ -14,7 +14,13 @@ import java.util.List;
  */
 public class SampleCircuitGenerator {
 
-
+    //     __________    <--w0
+    //    |          |
+    //  __|__        R0
+    //   ---         |   <--w1
+    //    |          R1
+    //    |__________|   <--w2
+    //
     public static Circuit generateSeriesResistorCircuit() {
 
         Circuit ciruit = new Circuit();
@@ -55,7 +61,13 @@ public class SampleCircuitGenerator {
 
 
 
-
+    //     ______________    <--w0
+    //    |          |   |
+    //  __|__        |   |
+    //   ---         R0  R1
+    //    |          |   |
+    //    |__________|___|   <--w1
+    //
     public static Circuit generateParallelResistorCircuit() {
 
         Circuit ciruit = new Circuit();
@@ -90,6 +102,13 @@ public class SampleCircuitGenerator {
 
     }
 
+    //        <--w0
+    //    |
+    //    R0
+    //    |   <--w1
+    //    R1
+    //    |   <--w2
+    //
     public static Circuit generateOpenLoopCircuit() {
 
         Circuit ciruit = new Circuit();
@@ -122,7 +141,13 @@ public class SampleCircuitGenerator {
 
     }
 
-
+    //     __________    <--w0
+    //    |          |
+    //  __|__        R0            R2
+    //   ---         |   <--w1     |   <-w3
+    //    |          R1            R3
+    //    |__________|   <--w2
+    //
     public static Circuit generateIsolatedBranchCircuit() {
 
 
@@ -171,6 +196,16 @@ public class SampleCircuitGenerator {
         return ciruit;
     }
 
+
+    //     __________    <--w0
+    //    |          |
+    //    |          R0
+    //  __|__        |___________    <-- w1
+    //   ---         |           |
+    //    |          R1          R2
+    //    |__________|   <--w2   |   <-- w3
+    //                           R3
+    //
     public static Circuit generateOpenBranchCircuit() {
 
         Circuit ciruit = new Circuit();

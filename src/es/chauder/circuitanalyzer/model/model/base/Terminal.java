@@ -1,5 +1,8 @@
 package es.chauder.circuitanalyzer.model.model.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by rchauderlot on 2/12/15.
  */
@@ -36,4 +39,11 @@ public class Terminal extends Connector {
         return (connector instanceof Terminal && getDevice() != null &&
                 getDevice().equals(((Terminal)connector).getDevice()));
     }
+
+    public List<Connector> getConnectorsConnectedToConnector() {
+        List<Connector> connectorsConnectedWithConnector = new ArrayList<Connector>(getDevice().getTerminals());
+        connectorsConnectedWithConnector.remove(this);
+        return connectorsConnectedWithConnector;
+    }
+
 }

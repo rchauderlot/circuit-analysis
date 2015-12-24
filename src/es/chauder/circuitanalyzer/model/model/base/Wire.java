@@ -19,4 +19,10 @@ public class Wire extends Connector {
 
         return connector instanceof Wire && equals(connector);
     }
+
+    public List<Connector> getConnectorsConnectedToConnector() {
+
+        return new ArrayList<Connector>(getTerminals());
+
+    }
 }

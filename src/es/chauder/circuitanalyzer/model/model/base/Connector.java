@@ -1,13 +1,16 @@
 package es.chauder.circuitanalyzer.model.model.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Base class for all junction parts like device terminals or wires.
  *
  * Created by rchauderlot on 2/12/15.
  */
-public class Connector {
+public abstract class Connector {
 
-    public boolean isLinkedTo(Connector connector) {
-        return equals(connector);
-    }
+    public abstract boolean isLinkedTo(Connector connector);
+    public abstract List<Connector> getConnectorsConnectedToConnector();
+
 }

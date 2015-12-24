@@ -17,55 +17,31 @@ public class NetworkGenerator {
 
     public static void generateNetworks(AnalysisGroup analysisGroup) {
 
-        generateOpenBranches(analysisGroup);
-
-        List<Branch> closedNetworkBranches = new ArrayList<Branch>(analysisGroup.getBranches());
-        closedNetworkBranches.removeAll(analysisGroup.getOpenBranches());
-
-        List<Branch> branchesToAnalyse = new ArrayList<Branch>(closedNetworkBranches);
-
-        List<Network> analysisGroupNetworks = new ArrayList<Network>();
-
-        while (branchesToAnalyse.size() > 0) {
-            Branch b = branchesToAnalyse.get(0);
-
-            Network network = generateSmallestNetworkStartingInBranch(closedNetworkBranches, b);
-
-            branchesToAnalyse.removeAll(network.getBranches());
-
-            analysisGroupNetworks.add(network);
-        }
-
-
-        analysisGroup.setNetworks(analysisGroupNetworks);
+//        generateOpenBranches(analysisGroup);
+//
+//        List<Branch> closedNetworkBranches = new ArrayList<Branch>(analysisGroup.getBranches());
+//        closedNetworkBranches.removeAll(analysisGroup.getOpenBranches());
+//
+//        List<Branch> branchesToAnalyse = new ArrayList<Branch>(closedNetworkBranches);
+//
+//        List<Network> analysisGroupNetworks = new ArrayList<Network>();
+//
+//        while (branchesToAnalyse.size() > 0) {
+//            Branch b = branchesToAnalyse.get(0);
+//
+//            Network network = generateSmallestNetworkStartingInBranch(closedNetworkBranches, b);
+//
+//            branchesToAnalyse.removeAll(network.getBranches());
+//
+//            analysisGroupNetworks.add(network);
+//        }
+//
+//
+//        analysisGroup.setNetworks(analysisGroupNetworks);
 
     }
 
-    public static void generateOpenBranches(AnalysisGroup analysisGroup) {
 
-        List<Branch> openBranches = analysisGroup.getOpenBranches();
-
-        for (Branch b : analysisGroup.getBranches()) {
-
-            Connector startConnector = b.getFirstElement();
-            Connector endConnector = b.getLastElement();
-
-            if (isDeadEndConnector(startConnector) || isDeadEndConnector(endConnector)) {
-                openBranches.add(b);
-            }
-        }
-    }
-
-    private static boolean isDeadEndConnector(Connector connector) {
-
-        boolean isDeadEnd = false;
-        if (connector instanceof Wire && ((Wire)connector).getTerminals().size() < 2) {
-            isDeadEnd = true;
-        } else if (connector instanceof Terminal && ((Terminal) connector).getWire() == null) {
-            isDeadEnd = true;
-        }
-        return isDeadEnd;
-    }
 
     private static Network generateSmallestNetworkStartingInBranch(List<Branch> closedNetworkBranches, Branch startingBranch) {
 

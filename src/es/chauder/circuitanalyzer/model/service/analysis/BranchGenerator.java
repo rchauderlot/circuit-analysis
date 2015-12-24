@@ -77,7 +77,13 @@ public class BranchGenerator {
 
     private static Branch generateBranchFromNode(Wire wire, Terminal terminal, List<Wire> wires, List<Device> devices) {
 
-        List<Connector> connectors = getNextConnectors(wire, terminal, wires, devices);
+
+
+        List<Connector> connectors = new ArrayList<Connector>();
+        connectors.add(wire);
+
+        List<Connector> nextConnectors = getNextConnectors(wire, terminal, wires, devices);
+        connectors.addAll(nextConnectors);
 
         Branch b = new Branch();
         b.setElements(connectors);

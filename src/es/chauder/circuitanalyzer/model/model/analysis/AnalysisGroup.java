@@ -40,9 +40,19 @@ public class AnalysisGroup {
         this.openBranches = openBranches;
     }
 
+    public List<Branch> getClosedBranches() {
+        return closedBranches;
+    }
+
+    public void setClosedBranches(List<Branch> closedBranches) {
+        this.closedBranches = closedBranches;
+    }
+
+
     List<Branch> branches = new ArrayList<>();
     List<Network> networks = new ArrayList<>();
     List<Node> nodes = new ArrayList<>();
 
+    List<Branch> closedBranches = new ArrayList<Branch>();
     List<Branch> openBranches = new ArrayList<Branch>();
 }
