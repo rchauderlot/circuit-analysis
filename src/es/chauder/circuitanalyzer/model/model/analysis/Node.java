@@ -1,5 +1,7 @@
 package es.chauder.circuitanalyzer.model.model.analysis;
 
+import es.chauder.circuitanalyzer.model.model.base.Connector;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,15 +10,21 @@ import java.util.List;
  */
 public class Node {
 
-    public List<Branch> getBranches() {
-        return branches;
+    public static class BranchEnd {
+        public Branch branch;
+        public Connector connector;
     }
 
-    public void setBranches(List<Branch> branches) {
-        this.branches = branches;
+
+    public List<BranchEnd> getBranchEnds() {
+        return branchEnds;
     }
 
-    private List<Branch> branches = new ArrayList<Branch>();
+    public void setBranchEnds(List<BranchEnd> branchEnds) {
+        this.branchEnds = branchEnds;
+    }
+
+    private List<BranchEnd> branchEnds = new ArrayList<BranchEnd>();
 
 
 

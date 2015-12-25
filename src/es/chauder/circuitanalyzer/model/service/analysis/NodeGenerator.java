@@ -10,6 +10,8 @@ import es.chauder.circuitanalyzer.model.model.base.Wire;
 import java.util.ArrayList;
 import java.util.List;
 
+import static es.chauder.circuitanalyzer.model.model.analysis.Node.*;
+
 /**
  * Created by rchauderlot on 15/12/15.
  */
@@ -17,61 +19,79 @@ public class NodeGenerator {
 
     public static void generateNodes(AnalysisGroup analysisGroup) {
 
+        List<Node> nodes = generatePossibleNodes(analysisGroup);
+        nodes = filterNodesRemovingWires(nodes);
+        analysisGroup.setNodes(nodes);
+
+    }
+
+
+    public static List<Node> generatePossibleNodes(AnalysisGroup analysisGroup) {
+
         List<Node> nodes = new ArrayList<Node>();
 
         for (Branch b : analysisGroup.getClosedBranches()) {
 
-            Node startNode = createStartNodeOfBranch(nodes, b);
-            if (startNode != null) {
-                nodes.add(startNode);
-            }
-
-            Node endNode = createEndNodeOfBranch(nodes, b);
-            if (endNode != null) {
-                nodes.add(endNode);
-            }
+            linkStartNodeOfBranch(nodes, b);
+            linkEndNodeOfBranch(nodes, b);
 
         }
+        return nodes;
+    }
 
-        analysisGroup.setNodes(nodes);
+    public static List<Node> filterNodesRemovingWires(List<Node> nodesToFilter) {
+
+        List<Node> nodes = new ArrayList<Node>(nodesToFilter);
+        List<Node> nodesToRemove = new ArrayList<Node>();
+        for (Node n : nodes) {
+            if (n.getBranchEnds().size() < 3) {
+                nodesToRemove.add(n);
+            }
+        }
+        nodes.removeAll(nodesToRemove);
+        return nodes;
     }
 
 
-    private static Node createStartNodeOfBranch(List<Node> nodes, Branch b) {
+
+    private static void linkStartNodeOfBranch(List<Node> nodes, Branch b) {
 
         Connector startConnector = b.getFirstElement();
 
         Node startNode = generateNodeReusingNodesForBranchConnector(nodes, b, startConnector);
 
         if (startNode != null) {
+            Node.BranchEnd branchEnd = new Node.BranchEnd();
+            branchEnd.branch = b;
+            branchEnd.connector = startConnector;
+
             // Make the link
-            startNode.getBranches().add(b);
+            startNode.getBranchEnds().add(branchEnd);
             b.setStart(startNode);
         }
-        return startNode;
     }
 
-    private static Node createEndNodeOfBranch(List<Node> nodes, Branch b) {
+    private static void linkEndNodeOfBranch(List<Node> nodes, Branch b) {
 
-        Connector endConnector = b.getFirstElement();
+        Connector endConnector = b.getLastElement();
 
         Node endNode = generateNodeReusingNodesForBranchConnector(nodes, b, endConnector);
 
         if (endNode != null) {
+            Node.BranchEnd branchEnd = new Node.BranchEnd();
+            branchEnd.branch = b;
+            branchEnd.connector = endConnector;
+
             // Make the link
-            endNode.getBranches().add(b);
+            endNode.getBranchEnds().add(branchEnd);
             b.setEnd(endNode);
         }
-
-        return endNode;
     }
+
 
     private static Node generateNodeReusingNodesForBranchConnector(List<Node> nodes, Branch b, Connector c) {
         Node node = findAnalyzedNodeLinkedToConnector(nodes, c);
-        if (node == null &&
-                ((c instanceof Terminal && ((Terminal)c).getDevice() != null &&
-                        ((Terminal)c).getDevice().getTerminals().size() > 2) ||
-                        (c instanceof Wire && ((Wire)c).getTerminals().size() > 2 ))) {
+        if (node == null) {
             node = new Node();
             nodes.add(node);
         }
@@ -84,15 +104,14 @@ public class NodeGenerator {
         Node node = null;
         for (int i = 0; node == null && i < analyzedNodes.size(); i++) {
             Node n = analyzedNodes.get(i);
-            for (int j = 0; node == null && j < n.getBranches().size(); j++) {
-                Branch analyzedBranch = n.getBranches().get(j);
-                if (analyzedBranch.getFirstElement().isLinkedTo(c) || analyzedBranch.getLastElement().isLinkedTo(c)) {
+            for (int j = 0; node == null && j < n.getBranchEnds().size(); j++) {
+                BranchEnd analyzedBranch = n.getBranchEnds().get(j);
+                if (analyzedBranch.connector.isLinkedTo(c)) {
                     node = n;
                 }
             }
         }
         return node;
     }
-
 
 }

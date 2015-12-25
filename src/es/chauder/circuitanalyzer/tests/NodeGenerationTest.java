@@ -18,7 +18,7 @@ public class NodeGenerationTest {
 
 
         Circuit circuit1 = SampleCircuitGenerator.generateSeriesResistorCircuit();
-        testNodeNumber(circuit1);
+        testNodeNumber(circuit1, 0);
 
     }
 
@@ -28,7 +28,7 @@ public class NodeGenerationTest {
 
 
         Circuit circuit2 = SampleCircuitGenerator.generateParallelResistorCircuit();
-        testNodeNumber(circuit2);
+        testNodeNumber(circuit2, 2);
 
 
     }
@@ -37,7 +37,7 @@ public class NodeGenerationTest {
 
 
         Circuit circuit3 = SampleCircuitGenerator.generateOpenLoopCircuit();
-        testNodeNumber(circuit3);
+        testNodeNumber(circuit3, 0);
 
 
     }
@@ -46,7 +46,7 @@ public class NodeGenerationTest {
 
 
         Circuit circuit4 = SampleCircuitGenerator.generateIsolatedBranchCircuit();
-        testNodeNumber(circuit4);
+        testNodeNumber(circuit4, 0);
 
 
     }
@@ -57,32 +57,32 @@ public class NodeGenerationTest {
     public void testOpenBranchCircuit() throws Exception {
 
         Circuit circuit5 = SampleCircuitGenerator.generateOpenBranchCircuit();
-        testNodeNumber(circuit5);
+        testNodeNumber(circuit5, 0);
 
     }
 
 
-    private void testNodeNumber(Circuit circuit) throws Exception {
+    private void testNodeNumber(Circuit circuit, int numberOfNodes) throws Exception {
 
-        int numberOfNodes = 0;
-        for (Device d : circuit.getDevices()) {
-            int connectedTerminals = 0;
-            for (Terminal t : d.getTerminals()) {
-                if (t.getWire() != null) {
-                    connectedTerminals ++;
-                }
-            }
-
-            if (connectedTerminals > 2) {
-                numberOfNodes ++;
-            }
-        }
-
-        for (Wire w : circuit.getWires()) {
-            if (w.getTerminals().size() > 2) {
-                numberOfNodes ++;
-            }
-        }
+//        int numberOfNodes = 0;
+//        for (Device d : circuit.getDevices()) {
+//            int connectedTerminals = 0;
+//            for (Terminal t : d.getTerminals()) {
+//                if (t.getWire() != null) {
+//                    connectedTerminals ++;
+//                }
+//            }
+//
+//            if (connectedTerminals > 2) {
+//                numberOfNodes ++;
+//            }
+//        }
+//
+//        for (Wire w : circuit.getWires()) {
+//            if (w.getTerminals().size() > 2) {
+//                numberOfNodes ++;
+//            }
+//        }
 
 
         AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit);
