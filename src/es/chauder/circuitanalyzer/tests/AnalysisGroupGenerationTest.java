@@ -58,6 +58,14 @@ public class AnalysisGroupGenerationTest {
 
     }
 
+    @Test
+    public void testNumberOfGroupsThreeNetworkCircuit() throws Exception {
+
+        Circuit circuit6 = SampleCircuitGenerator.generateThreeNetworkCircuit();
+        testNumberOfGroups(circuit6, 1);
+
+    }
+
     private void testNumberOfGroups(Circuit circuit, int groups) throws Exception {
 
         AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit);
@@ -113,6 +121,13 @@ public class AnalysisGroupGenerationTest {
 
     }
 
+    @Test
+    public void testNumberOfBranchesThreeNetworkCircuit() throws Exception {
+
+        Circuit circuit6 = SampleCircuitGenerator.generateThreeNetworkCircuit();
+        testNumberOfBranchesInGroups(circuit6);
+
+    }
 
     private void testNumberOfBranchesInGroups(Circuit circuit) throws Exception {
 

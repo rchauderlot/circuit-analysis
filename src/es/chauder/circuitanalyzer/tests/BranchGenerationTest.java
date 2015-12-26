@@ -61,6 +61,14 @@ public class BranchGenerationTest {
 
     }
 
+    @Test
+    public void testBranchNumberThreeNetworkCircuit() throws Exception {
+
+        Circuit circuit6 = SampleCircuitGenerator.generateThreeNetworkCircuit();
+        testBranchNumber(circuit6, 6);
+
+    }
+
     private void testBranchNumber(Circuit circuit, int branches) throws Exception {
 
         AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit);
@@ -162,6 +170,13 @@ public class BranchGenerationTest {
 
     }
 
+    @Test
+    public void testUnusedWiresThreeNetworkCircuit() throws Exception {
+
+        Circuit circuit6 = SampleCircuitGenerator.generateThreeNetworkCircuit();
+        testUnusedWires(circuit6, 0);
+
+    }
 
     private void testUnusedWires(Circuit curcuit, int unused) throws Exception {
 
@@ -211,6 +226,13 @@ public class BranchGenerationTest {
 
     }
 
+    @Test
+    public void testNumberOfTerminalsThreeNetworkCircuit() throws Exception {
+
+        Circuit circuit6 = SampleCircuitGenerator.generateThreeNetworkCircuit();
+        testNumberOfTerminals(circuit6);
+
+    }
 
     private void testNumberOfTerminals(Circuit circuit) throws Exception {
 

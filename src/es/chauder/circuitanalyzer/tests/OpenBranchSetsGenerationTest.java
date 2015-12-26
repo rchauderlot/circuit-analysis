@@ -60,6 +60,14 @@ public class OpenBranchSetsGenerationTest {
 
     }
 
+    @Test
+    public void testsThreeNetworkCircuit() throws Exception {
+
+        Circuit circuit6 = SampleCircuitGenerator.generateThreeNetworkCircuit();
+        testOpenBranchNumber(circuit6, 0);
+
+    }
+
 
     private void testOpenBranchNumber(Circuit circuit, int openBranches) throws Exception {
 

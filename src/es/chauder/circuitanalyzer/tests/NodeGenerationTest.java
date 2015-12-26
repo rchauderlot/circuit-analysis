@@ -51,13 +51,19 @@ public class NodeGenerationTest {
 
     }
 
-
-
     @Test
     public void testOpenBranchCircuit() throws Exception {
 
         Circuit circuit5 = SampleCircuitGenerator.generateOpenBranchCircuit();
         testNodeNumber(circuit5, 0);
+
+    }
+
+    @Test
+    public void testsThreeNetworkCircuit() throws Exception {
+
+        Circuit circuit6 = SampleCircuitGenerator.generateThreeNetworkCircuit();
+        testNodeNumber(circuit6, 4);
 
     }
 

@@ -50,13 +50,19 @@ public class ClosedBranchSetsGenerationTest {
 
     }
 
-
-
     @Test
     public void testOpenBranchCircuit() throws Exception {
 
         Circuit circuit5 = SampleCircuitGenerator.generateOpenBranchCircuit();
         testClosedBranchNumber(circuit5, 1);
+
+    }
+
+    @Test
+    public void testsThreeNetworkCircuit() throws Exception {
+
+        Circuit circuit6 = SampleCircuitGenerator.generateThreeNetworkCircuit();
+        testClosedBranchNumber(circuit6, 6);
 
     }
 

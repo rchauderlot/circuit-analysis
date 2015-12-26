@@ -257,6 +257,77 @@ public class SampleCircuitGenerator {
     }
 
 
+    //            2 Ohm
+    // w1 -> ______R1_________________   <--w2
+    //      |            |            |
+    //      |           R2 1 Ohm     R3 1 Ohm
+    //    __|__     w3 ->|_____R4_____|  <-- w4
+    //     ---  12V      |    1 Ohm   |
+    //      |           R5 1 Ohm     R6 2 Ohm
+    //      |____________|____________|  <-- w5
+    //
+    public static Circuit generateThreeNetworkCircuit() {
+
+        Circuit ciruit = new Circuit();
+        ciruit.setTitle("ThreeNetworkCircuit");
+
+        VoltageSource voltageSource = new VoltageSource();
+        voltageSource.setVoltage(12.0);
+
+        Resistor r1 = new Resistor(2);
+        Resistor r2 = new Resistor(1);
+        Resistor r3 = new Resistor(1);
+        Resistor r4 = new Resistor(1);
+        Resistor r5 = new Resistor(1);
+        Resistor r6 = new Resistor(2);
+
+
+
+        Wire w1 = new Wire();
+        connectDeviceWithWire(voltageSource, 1, w1);
+        connectDeviceWithWire(r1, 0, w1);
+
+        Wire w2 = new Wire();
+        connectDeviceWithWire(r1, 1, w2);
+        connectDeviceWithWire(r2, 0, w2);
+        connectDeviceWithWire(r3, 0, w2);
+
+        Wire w3 = new Wire();
+        connectDeviceWithWire(r2, 1, w3);
+        connectDeviceWithWire(r4, 0, w3);
+        connectDeviceWithWire(r5, 0, w3);
+
+        Wire w4 = new Wire();
+        connectDeviceWithWire(r3, 1, w4);
+        connectDeviceWithWire(r4, 1, w4);
+        connectDeviceWithWire(r6, 0, w4);
+
+        Wire w5 = new Wire();
+        connectDeviceWithWire(voltageSource, 0, w5);
+        connectDeviceWithWire(r5, 1, w5);
+        connectDeviceWithWire(r6, 1, w5);
+
+        List<Device> devices = ciruit.getDevices();
+        devices.add(voltageSource);
+        devices.add(r1);
+        devices.add(r2);
+        devices.add(r3);
+        devices.add(r4);
+        devices.add(r5);
+        devices.add(r6);
+
+        List<Wire> wires = ciruit.getWires();
+        wires.add(w1);
+        wires.add(w2);
+        wires.add(w3);
+        wires.add(w4);
+        wires.add(w5);
+
+        return ciruit;
+
+    }
+
+
     private static void connectDeviceWithWire(Device device, int terminalIndex, Wire wire) {
 
         Terminal terminal = device.getTerminals().get(terminalIndex);
