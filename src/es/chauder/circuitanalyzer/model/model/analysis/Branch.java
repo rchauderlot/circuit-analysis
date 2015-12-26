@@ -77,6 +77,18 @@ public class Branch {
         this.end = end;
     }
 
+    public Node getOppositeEnd(Node node) {
+
+        Node oppositeNode = null;
+        if (node == getStart()) {
+            oppositeNode = getEnd();
+        } else if (node == getEnd()) {
+            oppositeNode = getStart();
+        }
+        return oppositeNode;
+
+    }
+
     Node start;
     Node end;
 
