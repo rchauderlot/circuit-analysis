@@ -2,10 +2,7 @@ package es.chauder.circuitanalyzer.tests;
 
 import es.chauder.circuitanalyzer.model.model.analysis.AnalysisTopology;
 import es.chauder.circuitanalyzer.model.model.analysis.Branch;
-import es.chauder.circuitanalyzer.model.model.base.Circuit;
-import es.chauder.circuitanalyzer.model.model.base.Connector;
-import es.chauder.circuitanalyzer.model.model.base.Device;
-import es.chauder.circuitanalyzer.model.model.base.Terminal;
+import es.chauder.circuitanalyzer.model.model.base.*;
 import es.chauder.circuitanalyzer.model.service.analysis.AnalysisTopologyGenerator;
 import org.testng.annotations.Test;
 
@@ -258,6 +255,91 @@ public class BranchGenerationTest {
         }
 
         assert numberOfUsedTerminals == numOfTerminalInBranches;
+
+    }
+
+
+
+    @Test
+    public void testNumberOfWiresUsedByBranchesSeriesResistorCircuit() throws Exception {
+
+        Circuit circuit1 = SampleCircuitGenerator.generateSeriesResistorCircuit();
+        testNumberOfWiresUsedByBranches(circuit1);
+
+    }
+
+    @Test
+    public void testNumberOfWiresUsedByBranchesParallelResistorCircuit() throws Exception {
+
+        Circuit circuit2 = SampleCircuitGenerator.generateParallelResistorCircuit();
+        testNumberOfWiresUsedByBranches(circuit2);
+
+    }
+
+    @Test
+    public void testNumberOfWiresUsedByBranchesOpenLoopCircuit() throws Exception {
+
+        Circuit circuit3 = SampleCircuitGenerator.generateOpenLoopCircuit();
+        testNumberOfWiresUsedByBranches(circuit3);
+
+    }
+
+    @Test
+    public void testNumberOfWiresUsedByBranchesIsolatedBranchCircuit() throws Exception {
+
+        Circuit circuit4 = SampleCircuitGenerator.generateIsolatedBranchCircuit();
+        testNumberOfWiresUsedByBranches(circuit4);
+
+    }
+
+    @Test
+    public void testNumberOfWiresUsedByBranchesOpenBranchCircuit() throws Exception {
+
+        Circuit circuit5 = SampleCircuitGenerator.generateOpenBranchCircuit();
+        testNumberOfWiresUsedByBranches(circuit5);
+
+    }
+
+    @Test
+    public void testNumberOfWiresUsedByBranchesThreeNetworkCircuit() throws Exception {
+
+        Circuit circuit6 = SampleCircuitGenerator.generateThreeNetworkCircuit();
+        testNumberOfWiresUsedByBranches(circuit6);
+
+    }
+
+    private void testNumberOfWiresUsedByBranches(Circuit circuit) throws Exception {
+
+        int numberOfClassifiedWires = 0;
+        for (Wire w : circuit.getWires()) {
+            if (w.getTerminals().size() > 0 && w.getTerminals().size() <= 2) {
+                numberOfClassifiedWires ++;
+            } else {
+                numberOfClassifiedWires += w.getTerminals().size();
+            }
+        }
+
+        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit);
+
+        int numOfWiresInBranches = 0;
+        for (Branch b : topology.getBranches()) {
+            for (Connector c : b.getElements()) {
+                if (c instanceof Wire) {
+                    numOfWiresInBranches ++;
+                }
+            }
+            if (b.getFirstElement() == b.getLastElement()) {
+                Connector c = b.getFirstElement();
+                if ((c instanceof Wire && ((Wire)c).getTerminals().size() == 2)) {
+                    numOfWiresInBranches--;
+                } else if ((c instanceof Terminal && ((Terminal)c).getDevice() != null && ((Terminal)c).getDevice().getTerminals().size() == 2)) {
+                    numOfWiresInBranches--;
+                }
+            }
+
+        }
+
+        assert numberOfClassifiedWires == numOfWiresInBranches;
 
     }
 }

@@ -46,7 +46,9 @@ public class BranchGenerator {
             } else { // If there is a wire with more than 2 terminals, its a node, lets analyze all branches.
                 for (Terminal t : w.getTerminals()) {
                     Branch b = generateBranchFromNode(w, t, wiresToBeAnalyzed, devicesToBeAnalyzed);
-                    branches.add(b);
+                    if (b != null) {
+                        branches.add(b);
+                    }
                 }
             }
 
@@ -77,16 +79,18 @@ public class BranchGenerator {
 
     private static Branch generateBranchFromNode(Wire wire, Terminal terminal, List<Wire> wires, List<Device> devices) {
 
-
+        Branch b = null;
 
         List<Connector> connectors = new ArrayList<Connector>();
         connectors.add(wire);
 
         List<Connector> nextConnectors = getNextConnectors(wire, terminal, wires, devices);
-        connectors.addAll(nextConnectors);
+        if (nextConnectors.size() > 0) {
+            connectors.addAll(nextConnectors);
 
-        Branch b = new Branch();
-        b.setElements(connectors);
+            b = new Branch();
+            b.setElements(connectors);
+        }
         return b;
 
     }
@@ -147,7 +151,7 @@ public class BranchGenerator {
                     // Remove the wire to the list, and mark it as used
                     connectors.add(currentWire);
 
-                    if (wires.contains(currentWire)) {
+                    if (wires.contains(currentWire) && currentWire.getTerminals().size() == 2) {
                         wires.remove(currentWire);
                         // Get the terminal to continue analysing if any
                         currentTerminal = getNextTerminalFromWire(currentWire, currentTerminal);
