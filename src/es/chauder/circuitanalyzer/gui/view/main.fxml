@@ -12,30 +12,45 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.ScrollPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <ToolBar prefHeight="40.0" prefWidth="786.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="562.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
-        <items>
-          <AnchorPane minHeight="150.0" minWidth="300.0">
-               <children>
-                  <StackedAreaChart prefHeight="211.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <xAxis>
-                      <NumberAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis side="LEFT" />
-                    </yAxis>
-                  </StackedAreaChart>
-               </children>
-            </AnchorPane>
-          <AnchorPane minHeight="150.0" minWidth="300.0">
-               <children>
-                  <ListView orientation="HORIZONTAL" prefHeight="349.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-               </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="600.0" prefWidth="800.0"
+            xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="es.chauder.circuitanalyzer.gui.controller.MainController">
+    <children>
+        <ToolBar prefHeight="40.0" prefWidth="786.0"
+                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+                 fx:id="toolBar"/>
+        <SplitPane dividerPositions="0.5" orientation="VERTICAL"
+                   prefHeight="562.0" prefWidth="800.0"
+                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+            <items>
+                <AnchorPane minHeight="150.0" minWidth="300.0">
+                    <children>
+                        <LineChart AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+                                   createSymbols="false"
+                                   fx:id="lineChart">
+                            <xAxis>
+                                <!-- <NumberAxis side="BOTTOM" /> -->
+                                <es.chauder.circuitanalyzer.gui.view.LogarithmicAxis side="BOTTOM" fx:id="frequencyAxis" forceZeroInRange="false" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT" />
+                                <!-- <es.chauder.circuitanalyzer.gui.view.LogarithmicAxis side="LEFT" /> -->
+                            </yAxis>
+                        </LineChart>
+                    </children>
+                </AnchorPane>
+                <AnchorPane minHeight="150.0" minWidth="300.0">
+                    <children>
+                        <ListView orientation="HORIZONTAL" prefHeight="349.0" prefWidth="800.0"
+                                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
 </AnchorPane>
