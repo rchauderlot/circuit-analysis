@@ -1,5 +1,8 @@
 package es.chauder.circuitanalyzer.model.model.base;
 
+import es.chauder.circuitanalyzer.model.model.arithmetic.Complex;
+
+import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +15,9 @@ import java.util.List;
 public abstract class Device {
 
     public abstract int getNumberOfTerminals();
-    public abstract double getIntentsity(double frequency);
-    public abstract double getVoltage(double frequency);
-    public abstract double getImpedance(double frequency);
+    public abstract Complex getIntentsity(double frequency);
+    public abstract Complex getVoltage(double frequency);
+    public abstract Complex getImpedance(double frequency);
 
     public Device(List<Terminal> terminals) {
         super();
@@ -26,6 +29,7 @@ public abstract class Device {
         generateDefaultTerminals();
     }
 
+    @XmlElement
     public List<Terminal> getTerminals() {
         return terminals;
     }

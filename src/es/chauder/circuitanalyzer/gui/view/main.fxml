@@ -20,7 +20,10 @@
     <children>
         <ToolBar prefHeight="40.0" prefWidth="786.0"
                  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
-                 fx:id="toolBar"/>
+                 fx:id="toolBar">
+
+
+        </ToolBar>
         <SplitPane dividerPositions="0.5" orientation="VERTICAL"
                    prefHeight="562.0" prefWidth="800.0"
                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"

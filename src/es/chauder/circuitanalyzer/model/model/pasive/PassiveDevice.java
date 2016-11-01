@@ -1,5 +1,6 @@
 package es.chauder.circuitanalyzer.model.model.pasive;
 
+import es.chauder.circuitanalyzer.model.model.arithmetic.Complex;
 import es.chauder.circuitanalyzer.model.model.base.Device;
 
 /**
@@ -7,12 +8,12 @@ import es.chauder.circuitanalyzer.model.model.base.Device;
  */
 public abstract class PassiveDevice extends Device {
 
-    public double getIntentsity(double frequency) {
-        return 0;
+    public Complex getIntentsity(double frequency) {
+        return null;
     }
 
-    public double getVoltage(double frequency) {
-        return 0;
+    public Complex getVoltage(double frequency) {
+        return null;
     }
 
 }

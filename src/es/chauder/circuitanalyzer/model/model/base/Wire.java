@@ -1,5 +1,6 @@
 package es.chauder.circuitanalyzer.model.model.base;
 
+import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public class Wire extends Connector {
 
     private List<Terminal> terminals = new ArrayList<Terminal>();
 
+    @XmlElement
     public List<Terminal> getTerminals() {
         return terminals;
     }

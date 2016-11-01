@@ -1,5 +1,6 @@
 package es.chauder.circuitanalyzer.model.model.base;
 
+import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import java.util.List;
  */
 public class Circuit {
 
+    @XmlElement
     public List<Device> getDevices() {
         return devices;
     }
@@ -16,6 +18,7 @@ public class Circuit {
         this.devices = devices;
     }
 
+    @XmlElement
     public List<Wire> getWires() {
         return wires;
     }
@@ -24,6 +27,7 @@ public class Circuit {
         this.wires = wires;
     }
 
+    @XmlElement
     public String getTitle() {
         return title;
     }

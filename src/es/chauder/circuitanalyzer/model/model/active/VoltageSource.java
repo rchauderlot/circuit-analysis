@@ -1,5 +1,6 @@
 package es.chauder.circuitanalyzer.model.model.active;
 
+import es.chauder.circuitanalyzer.model.model.arithmetic.Complex;
 import es.chauder.circuitanalyzer.model.model.base.Device;
 
 /**
@@ -25,17 +26,17 @@ public class VoltageSource extends Device {
     }
 
     @Override
-    public double getIntentsity(double frequency) {
-        return 0;
+    public Complex getIntentsity(double frequency) {
+        return null;
     }
 
     @Override
-    public double getVoltage(double frequency) {
-        return voltage;
+    public Complex getVoltage(double frequency) {
+        return new Complex(voltage, 0);
     }
 
     @Override
-    public double getImpedance(double frequency) {
-        return 0;
+    public Complex getImpedance(double frequency) {
+        return null;
     }
 }

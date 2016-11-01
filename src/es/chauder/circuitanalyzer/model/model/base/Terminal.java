@@ -1,5 +1,6 @@
 package es.chauder.circuitanalyzer.model.model.base;
 
+import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class Terminal extends Connector {
         return device;
     }
 
+    @XmlElement
     public int getTerminalIndex() {
         return terminalIndex;
     }
