@@ -177,7 +177,7 @@ public class BranchGenerator {
         if (device != null && device.getTerminals() != null && device.getTerminals().size() == 2 && currentTerminal != null) {
             List<Terminal> wireTerminals = device.getTerminals();
 
-            // And one of the connectors is the current connector
+            // And one of the connectors is the current startingConnector
             if (wireTerminals.get(0).equals(currentTerminal)) {
                 nextTerminal = wireTerminals.get(1);
             } else if (wireTerminals.get(1).equals(currentTerminal)) {
@@ -195,7 +195,7 @@ public class BranchGenerator {
         if (wire != null && wire.getTerminals() != null && wire.getTerminals().size() == 2 && currentTerminal != null) {
             List<Terminal> wireTerminals = wire.getTerminals();
 
-            // And one of the connectors is the current connector
+            // And one of the connectors is the current startingConnector
             if (wireTerminals.get(0).equals(currentTerminal)) {
                 nextTerminal = wireTerminals.get(1);
             } else if (wireTerminals.get(1).equals(currentTerminal)) {

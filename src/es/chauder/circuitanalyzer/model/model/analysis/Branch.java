@@ -20,8 +20,6 @@ public class Branch {
     }
 
 
-
-
     public Connector getFirstElement() {
         Connector connector = null;
         if (elements != null && elements.size() > 0) {
@@ -41,9 +39,7 @@ public class Branch {
     }
 
 
-
     public boolean isConnectedTo(Branch other) {
-
 
         Connector branch1Start = getFirstElement();
         Connector branch1End = getLastElement();
@@ -56,10 +52,8 @@ public class Branch {
                 branch1End.isLinkedTo(branch2Start) ||
                 branch1End.isLinkedTo(branch2End));
 
-
     }
 
-    List<Connector> elements = new ArrayList<Connector>();
 
     public Node getStart() {
         return start;
@@ -77,7 +71,7 @@ public class Branch {
         this.end = end;
     }
 
-    public Node getOppositeEnd(Node node) {
+    public Node getOppositeBoundaryNode(Node node) {
 
         Node oppositeNode = null;
         if (node == getStart()) {
@@ -89,9 +83,23 @@ public class Branch {
 
     }
 
+
+    public Connector getOppositeBoundaryElement(Connector element) {
+
+        Connector oppositeElement = null;
+        if (element == getFirstElement()) {
+            oppositeElement = getLastElement();
+        } else if (element == getLastElement()) {
+            oppositeElement = getFirstElement();
+        }
+        return oppositeElement;
+
+    }
+
+
     Node start;
     Node end;
+    List<Connector> elements = new ArrayList<Connector>();
 
-    double current;
 
 }

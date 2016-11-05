@@ -54,13 +54,13 @@ public class FrequencyAnalysisGroupComputationGenerator {
 
         ComplexEquation complexEquation = new ComplexEquation();
 
-        if (network != null && network.getBranchEnds() != null && network.getBranchEnds().size() > 0) {
+        if (network != null && network.getBranchDirections() != null && network.getBranchDirections().size() > 0) {
 
-            for (Node.BranchEnd branchEnd : network.getBranchEnds()) {
+            for (BranchDirection branchDirection : network.getBranchDirections()) {
 
-                ComplexEquationVariable complexVariable = createVariableIfNeededForBranch(branchEnd, assignmentMap);
-                boolean followingBranchEndDirection = isBranchEndFollowingVariableDirection(branchEnd, complexVariable, assignmentMap);
-                generateTermsForBranch(frequency, branchEnd, complexVariable, complexEquation, followingBranchEndDirection);
+                ComplexEquationVariable complexVariable = createVariableIfNeededForBranch(branchDirection, assignmentMap);
+                boolean followingBranchEndDirection = isBranchEndFollowingVariableDirection(branchDirection, complexVariable, assignmentMap);
+                generateTermsForBranch(frequency, branchDirection, complexVariable, complexEquation, followingBranchEndDirection);
             }
         }
 
@@ -69,12 +69,12 @@ public class FrequencyAnalysisGroupComputationGenerator {
 
 
     private static void generateTermsForBranch(double frequency,
-                                               Node.BranchEnd branchEnd,
+                                               BranchDirection branchDirection,
                                                ComplexEquationVariable variable,
                                                ComplexEquation complexEquation,
                                                boolean followingBranchEndDirection) {
 
-        for (Connector connector : branchEnd.branch.getElements()) {
+        for (Connector connector : branchDirection.getBranch().getElements()) {
             if (connector instanceof Terminal) {
                 Terminal terminal = (Terminal) connector;
                 if (terminal.getDevice() != null) {
@@ -146,10 +146,10 @@ public class FrequencyAnalysisGroupComputationGenerator {
     private static ComplexEquation generateEquationForNode(Node node, BranchComplexVariableAssignmentMap assignmentMap) {
 
         ComplexEquation complexEquation = new ComplexEquation();
-        if (node != null && node.getBranchEnds() != null) {
-            for (Node.BranchEnd branchEnd : node.getBranchEnds()) {
-                ComplexEquationVariable complexVariable = createVariableIfNeededForBranch(branchEnd, assignmentMap);
-                boolean followingBranchEndDirection = isBranchEndFollowingVariableDirection(branchEnd, complexVariable, assignmentMap);
+        if (node != null && node.getBranchDirections() != null) {
+            for (BranchDirection branchDirection : node.getBranchDirections()) {
+                ComplexEquationVariable complexVariable = createVariableIfNeededForBranch(branchDirection, assignmentMap);
+                boolean followingBranchEndDirection = isBranchEndFollowingVariableDirection(branchDirection, complexVariable, assignmentMap);
                 if (followingBranchEndDirection) {
                     complexEquation.addTerm(new Complex(1, 0), complexVariable);
                 } else {
@@ -161,23 +161,23 @@ public class FrequencyAnalysisGroupComputationGenerator {
         return complexEquation;
     }
 
-    private static ComplexEquationVariable createVariableIfNeededForBranch(Node.BranchEnd branchEnd,
+    private static ComplexEquationVariable createVariableIfNeededForBranch(BranchDirection branchDirection,
                                                                            BranchComplexVariableAssignmentMap assignmentMap) {
-        ComplexEquationVariable complexVariable = assignmentMap.getVariableForBranch(branchEnd.branch);
+        ComplexEquationVariable complexVariable = assignmentMap.getVariableForBranch(branchDirection.getBranch());
         if (complexVariable == null) {
             complexVariable = new ComplexEquationVariable(assignmentMap.getVariableCount());
-            assignmentMap.addVariableAndBranchEnd(complexVariable, branchEnd);
+            assignmentMap.addVariableAndBranchEnd(complexVariable, branchDirection);
         }
         return complexVariable;
     }
 
-    private static boolean isBranchEndFollowingVariableDirection(Node.BranchEnd branchEnd,
+    private static boolean isBranchEndFollowingVariableDirection(BranchDirection branchDirection,
                                                                  ComplexEquationVariable complexVariable,
                                                                  BranchComplexVariableAssignmentMap assignmentMap) {
 
         boolean followingBranchEndDirection = true;
-        if (branchEnd != null && branchEnd.branch != null && complexVariable != null) {
-            followingBranchEndDirection = assignmentMap.getBranchEndForVariable(complexVariable) == branchEnd;
+        if (branchDirection != null && branchDirection.getBranch() != null && complexVariable != null) {
+            followingBranchEndDirection = assignmentMap.getBranchEndForVariable(complexVariable) == branchDirection;
         }
         return followingBranchEndDirection;
     }

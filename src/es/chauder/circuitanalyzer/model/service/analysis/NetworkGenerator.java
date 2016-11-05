@@ -1,9 +1,6 @@
 package es.chauder.circuitanalyzer.model.service.analysis;
 
-import es.chauder.circuitanalyzer.model.model.analysis.AnalysisGroup;
-import es.chauder.circuitanalyzer.model.model.analysis.Branch;
-import es.chauder.circuitanalyzer.model.model.analysis.Network;
-import es.chauder.circuitanalyzer.model.model.analysis.Node;
+import es.chauder.circuitanalyzer.model.model.analysis.*;
 
 import java.util.*;
 
@@ -24,8 +21,8 @@ public class NetworkGenerator {
 
             Network network = generateSmallestNetworkStartingInBranch(analysisGroup, b);
 
-            for (Node.BranchEnd branchEnd : network.getBranchEnds()) {
-                branchesToAnalyse.remove(branchEnd.branch);
+            for (BranchDirection branchDirection : network.getBranchDirections()) {
+                branchesToAnalyse.remove(branchDirection.getBranch());
             }
 
             analysisGroupNetworks.add(network);
@@ -41,56 +38,49 @@ public class NetworkGenerator {
     private static Network generateSmallestNetworkStartingInBranch(AnalysisGroup analysisGroup,
                                                                    Branch startingBranch) {
 
-        List<Node.BranchEnd> branchEnds = new ArrayList<Node.BranchEnd>();
+        List<BranchDirection> branchDirections = new ArrayList<BranchDirection>();
         Node startNode = startingBranch.getStart();
         Node endNode = startingBranch.getEnd();
 
 
         if (startNode == null && endNode == null) {
-            branchEnds = createBranchEndsForClosedLoopBranch(startingBranch);
+            branchDirections = createBranchEndsForClosedLoopBranch(startingBranch);
         } else if (startNode != null && endNode != null) {
             if (startNode.equals(endNode)) {
-                branchEnds = createBranchEndsForClosedLoopBranch(startingBranch);
+                branchDirections = createBranchEndsForClosedLoopBranch(startingBranch);
             } else {
-                branchEnds = createBranchEndsForGeneralBranch(analysisGroup, startingBranch);
+                branchDirections = createBranchEndsForGeneralBranch(analysisGroup, startingBranch);
             }
         }
 
         Network network = new Network();
-        network.setBranchEnds(branchEnds);
+        network.setBranchDirections(branchDirections);
         return  network;
 
     }
 
 
-    private static List<Node.BranchEnd> createBranchEndsForClosedLoopBranch(Branch branch) {
+    private static List<BranchDirection> createBranchEndsForClosedLoopBranch(Branch branch) {
 
-        List<Node.BranchEnd> branchEnds = new ArrayList<Node.BranchEnd>();
+        List<BranchDirection> branchDirections = new ArrayList<BranchDirection>();
 
-        Node.BranchEnd startBranchEnd = new Node.BranchEnd();
-        startBranchEnd.branch = branch;
-        startBranchEnd.connector = branch.getFirstElement();
-        branchEnds.add(startBranchEnd);
+        BranchDirection startBranchDirection = new BranchDirection(branch, branch.getFirstElement(), branch.getLastElement());
+        branchDirections.add(startBranchDirection);
 
-        Node.BranchEnd endBranchEnd = new Node.BranchEnd();
-        endBranchEnd.branch = branch;
-        endBranchEnd.connector = branch.getLastElement();
-        branchEnds.add(endBranchEnd);
-
-        return branchEnds;
+        return branchDirections;
     }
 
-    private static List<Node.BranchEnd> createBranchEndsForGeneralBranch(AnalysisGroup analysisGroup,
-                                                                         Branch branch) {
+    private static List<BranchDirection> createBranchEndsForGeneralBranch(AnalysisGroup analysisGroup,
+                                                                          Branch branch) {
 
 
-        List<Node.BranchEnd> branchEnds = new ArrayList<Node.BranchEnd>();
+        List<BranchDirection> branchDirections = new ArrayList<BranchDirection>();
 
         Map<Node, DijkstraVertex> dijkstraVertexMap = computeDijkstraVertexes(analysisGroup, branch.getStart(), branch);
 
 
-        Node.BranchEnd endBranchEnd = findBranchEndForNode(branch, branch.getEnd());
-        branchEnds.add(endBranchEnd);
+        BranchDirection endBranchDirection = findBranchEndForNode(branch, branch.getEnd());
+        branchDirections.add(endBranchDirection);
 
         Node currentNode = branch.getEnd();
         while (currentNode != branch.getStart()) {
@@ -99,41 +89,41 @@ public class NetworkGenerator {
             Branch currentBranch = getBranchBetweenNodes(currentNode, vertex.previous);
 
 
-            Node.BranchEnd currentStartBranchEnd = findBranchEndForNode(currentBranch, currentNode);
-            branchEnds.add(currentStartBranchEnd);
+            BranchDirection currentStartBranchDirection = findBranchEndForNode(currentBranch, currentNode);
+            branchDirections.add(currentStartBranchDirection);
 
-            Node.BranchEnd currentEndBranchEnd = findBranchEndForNode(currentBranch, vertex.previous);
-            branchEnds.add(currentEndBranchEnd);
+            BranchDirection currentEndBranchDirection = findBranchEndForNode(currentBranch, vertex.previous);
+            branchDirections.add(currentEndBranchDirection);
 
             currentNode = vertex.previous;
         }
 
-        Node.BranchEnd startBranchEnd = findBranchEndForNode(branch, branch.getStart());
-        branchEnds.add(startBranchEnd);
+        BranchDirection startBranchDirection = findBranchEndForNode(branch, branch.getStart());
+        branchDirections.add(startBranchDirection);
 
-        return branchEnds;
+        return branchDirections;
     }
 
-    private static Node.BranchEnd findBranchEndForNode(Branch branch, Node node) {
+    private static BranchDirection findBranchEndForNode(Branch branch, Node node) {
 
-        Node.BranchEnd branchEnd = null;
-        for (Node.BranchEnd be : node.getBranchEnds()) {
-            if (be.branch == branch) {
-                branchEnd = be;
+        BranchDirection branchDirection = null;
+        for (BranchDirection be : node.getBranchDirections()) {
+            if (be.getBranch() == branch) {
+                branchDirection = be;
                 break;
             }
         }
-        return branchEnd;
+        return branchDirection;
     }
 
     private static Branch getBranchBetweenNodes(Node node1, Node node2) {
 
         Branch branch = null;
 
-        for (Node.BranchEnd branchEndInNode1 : node1.getBranchEnds()) {
-            for (Node.BranchEnd branchEndInNode2 : node2.getBranchEnds()) {
-                if (branchEndInNode1.branch == branchEndInNode2.branch) {
-                    branch = branchEndInNode1.branch;
+        for (BranchDirection branchDirectionInNode1 : node1.getBranchDirections()) {
+            for (BranchDirection branchDirectionInNode2 : node2.getBranchDirections()) {
+                if (branchDirectionInNode1.getBranch() == branchDirectionInNode2.getBranch()) {
+                    branch = branchDirectionInNode1.getBranch();
                     break;
                 }
             }
@@ -177,13 +167,13 @@ public class NetworkGenerator {
 
             nodeList.remove(minNode);
 
-            for (Node.BranchEnd neighborBranch : minNode.getBranchEnds()) {
+            for (BranchDirection neighborBranch : minNode.getBranchDirections()) {
 
-                if (neighborBranch.branch != branchToAvoid) {
-                    Node neighborNode = neighborBranch.branch.getOppositeEnd(minNode);
+                if (neighborBranch.getBranch() != branchToAvoid) {
+                    Node neighborNode = neighborBranch.getBranch().getOppositeBoundaryNode(minNode);
                     if (nodeList.contains(neighborNode)) {
 
-                        long alt = minDistance + neighborBranch.branch.getElements().size();
+                        long alt = minDistance + neighborBranch.getBranch().getElements().size();
                         DijkstraVertex neighborVertex = vertexMap.get(neighborNode);
                         if (alt < neighborVertex.distance) {
                             neighborVertex.distance = alt;

@@ -9,13 +9,13 @@ import java.util.ArrayList;
  */
 public class Network {
 
-    public List<Node.BranchEnd> getBranchEnds() {
-        return branchEnds;
+    public List<BranchDirection> getBranchDirections() {
+        return branchDirections;
     }
 
-    public void setBranchEnds(List<Node.BranchEnd> branchEnds) {
-        this.branchEnds = branchEnds;
+    public void setBranchDirections(List<BranchDirection> branchDirections) {
+        this.branchDirections = branchDirections;
     }
 
-    private List<Node.BranchEnd> branchEnds = new ArrayList<Node.BranchEnd>();
+    private List<BranchDirection> branchDirections = new ArrayList<BranchDirection>();
 }
