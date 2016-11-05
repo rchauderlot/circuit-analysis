@@ -44,23 +44,25 @@ public class NetworkGenerator {
 
 
         if (startNode == null && endNode == null) {
-            branchDirections = createBranchEndsForClosedLoopBranch(startingBranch);
+            branchDirections = createBranchDirectionsForClosedLoopBranch(startingBranch);
         } else if (startNode != null && endNode != null) {
             if (startNode.equals(endNode)) {
-                branchDirections = createBranchEndsForClosedLoopBranch(startingBranch);
+                branchDirections = createBranchDirectionsForClosedLoopBranch(startingBranch);
             } else {
-                branchDirections = createBranchEndsForGeneralBranch(analysisGroup, startingBranch);
+                branchDirections = createBranchDirectionsForGeneralBranch(analysisGroup, startingBranch);
             }
         }
 
         Network network = new Network();
-        network.setBranchDirections(branchDirections);
+        for (BranchDirection branch : branchDirections) {
+            network.addBranchDirection(branch);
+        }
         return  network;
 
     }
 
 
-    private static List<BranchDirection> createBranchEndsForClosedLoopBranch(Branch branch) {
+    private static List<BranchDirection> createBranchDirectionsForClosedLoopBranch(Branch branch) {
 
         List<BranchDirection> branchDirections = new ArrayList<BranchDirection>();
 
@@ -70,8 +72,8 @@ public class NetworkGenerator {
         return branchDirections;
     }
 
-    private static List<BranchDirection> createBranchEndsForGeneralBranch(AnalysisGroup analysisGroup,
-                                                                          Branch branch) {
+    private static List<BranchDirection> createBranchDirectionsForGeneralBranch(AnalysisGroup analysisGroup,
+                                                                                Branch branch) {
 
 
         List<BranchDirection> branchDirections = new ArrayList<BranchDirection>();
