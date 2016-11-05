@@ -61,7 +61,7 @@ public class NodeGenerator {
             BranchDirection branchDirection = new BranchDirection(b, startConnector, b.getOppositeBoundaryElement(startConnector));
 
             // Make the link
-            startNode.getBranchDirections().add(branchDirection);
+            startNode.addBranchDirection(branchDirection);
             b.setStart(startNode);
         }
     }
@@ -76,7 +76,7 @@ public class NodeGenerator {
             BranchDirection branchDirection = new BranchDirection(b, endConnector, b.getOppositeBoundaryElement(endConnector));
 
             // Make the link
-            endNode.getBranchDirections().add(branchDirection);
+            endNode.addBranchDirection(branchDirection);
             b.setEnd(endNode);
         }
     }

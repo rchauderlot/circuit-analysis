@@ -13,8 +13,8 @@ public class Node {
         return branchDirections;
     }
 
-    public void setBranchDirections(List<BranchDirection> branchDirections) {
-        this.branchDirections = branchDirections;
+    public void addBranchDirection(BranchDirection branchDirection) {
+        branchDirections.add(branchDirection);
     }
 
     private List<BranchDirection> branchDirections = new ArrayList<BranchDirection>();
