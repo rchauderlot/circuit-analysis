@@ -1,6 +1,8 @@
 package es.chauder.circuitanalyzer.model.service.analysis;
 
 import es.chauder.circuitanalyzer.model.model.analysis.*;
+import es.chauder.circuitanalyzer.model.model.base.Connector;
+import es.chauder.circuitanalyzer.model.service.arithmetic.DijkstraSolver;
 
 import java.util.*;
 
@@ -73,122 +75,51 @@ public class NetworkGenerator {
     }
 
     private static List<BranchDirection> createBranchDirectionsForGeneralBranch(AnalysisGroup analysisGroup,
-                                                                                Branch branch) {
+                                                                                final Branch branch) {
 
+        // This creates a list without the orginal branch
+        // This is done as this to find the minimal path which closes the loop but we dont want the that branch in the result
+        List<BranchDirection> minimalEdgeListBetweenNodes =
+                new DijkstraSolver<Node, BranchDirection>().createMinimalEdgeListBetweenNodes(
+                        branch.getStart(),
+                        branch.getEnd(),
+                        analysisGroup.getNodes(),
+                        new DijkstraSolver.DijkstraSolverDelegate<Node, BranchDirection>() {
+                            @Override
+                            public List<BranchDirection> getNeighbourEdges(Node node) {
+                                List<BranchDirection> edges = new ArrayList<BranchDirection>();
+                                for (BranchDirection b : node.getBranchDirections()) {
+                                    if (b.getBranch() != branch) { // We remove the original branch of the dijkstra analysis
+                                        Connector endElement = b.getBranch().getFirstElementInTheBranchStartingFromNode(node);
+                                        Connector startElement = b.getBranch().getOppositeBoundaryElement(endElement);
+                                        edges.add(new BranchDirection(
+                                                b.getBranch(),
+                                                startElement,
+                                                endElement));
+                                    }
+                                }
+                                return edges;
+                            }
 
-        List<BranchDirection> branchDirections = new ArrayList<BranchDirection>();
+                            @Override
+                            public Node getNextNodeFromEdge(Node currentNode, BranchDirection edge) {
+                                return edge.getBranch().getOppositeBoundaryNode(currentNode);
+                            }
 
-        Map<Node, DijkstraVertex> dijkstraVertexMap = computeDijkstraVertexes(analysisGroup, branch.getStart(), branch);
+                            @Override
+                            public long getEdgeLength(BranchDirection edge) {
+                                return edge.getBranch().getElements().size();
+                            }
+                        });
 
+        // Add original branch
+        //
+        // But, it should be added in the opposite direction as the dijkstra analysed branches went from end to start,
+        // this should go from start to end to close the loop following a single direction.
+        minimalEdgeListBetweenNodes.add(new BranchDirection(branch, branch.getLastElement(), branch.getFirstElement()));
 
-        BranchDirection endBranchDirection = findBranchEndForNode(branch, branch.getEnd());
-        branchDirections.add(endBranchDirection);
+        return minimalEdgeListBetweenNodes;
 
-        Node currentNode = branch.getEnd();
-        while (currentNode != branch.getStart()) {
-            DijkstraVertex vertex = dijkstraVertexMap.get(currentNode);
-
-            Branch currentBranch = getBranchBetweenNodes(currentNode, vertex.previous);
-
-
-            BranchDirection currentStartBranchDirection = findBranchEndForNode(currentBranch, currentNode);
-            branchDirections.add(currentStartBranchDirection);
-
-            BranchDirection currentEndBranchDirection = findBranchEndForNode(currentBranch, vertex.previous);
-            branchDirections.add(currentEndBranchDirection);
-
-            currentNode = vertex.previous;
-        }
-
-        BranchDirection startBranchDirection = findBranchEndForNode(branch, branch.getStart());
-        branchDirections.add(startBranchDirection);
-
-        return branchDirections;
-    }
-
-    private static BranchDirection findBranchEndForNode(Branch branch, Node node) {
-
-        BranchDirection branchDirection = null;
-        for (BranchDirection be : node.getBranchDirections()) {
-            if (be.getBranch() == branch) {
-                branchDirection = be;
-                break;
-            }
-        }
-        return branchDirection;
-    }
-
-    private static Branch getBranchBetweenNodes(Node node1, Node node2) {
-
-        Branch branch = null;
-
-        for (BranchDirection branchDirectionInNode1 : node1.getBranchDirections()) {
-            for (BranchDirection branchDirectionInNode2 : node2.getBranchDirections()) {
-                if (branchDirectionInNode1.getBranch() == branchDirectionInNode2.getBranch()) {
-                    branch = branchDirectionInNode1.getBranch();
-                    break;
-                }
-            }
-        }
-        return branch;
-    }
-
-
-    private static class DijkstraVertex {
-        long distance = Long.MAX_VALUE;
-        Node previous = null;
-    }
-
-
-    private static Map<Node, DijkstraVertex> computeDijkstraVertexes(AnalysisGroup analysisGroup, Node startNode, Branch branchToAvoid) {
-
-        Map<Node, DijkstraVertex> vertexMap = new HashMap<Node, DijkstraVertex>();
-        List<Node> nodeList = new ArrayList<Node>();
-
-        for (Node n : analysisGroup.getNodes()) {
-            DijkstraVertex v = new DijkstraVertex();
-            vertexMap.put(n, v);
-            nodeList.add(n);
-        }
-
-        vertexMap.get(startNode).distance = 0;
-
-        while (!nodeList.isEmpty()) {
-
-            Node minNode = nodeList.get(0);
-            long minDistance = vertexMap.get(minNode).distance;
-
-            for (int i = 1; i < nodeList.size(); i++) {
-                Node node = nodeList.get(i);
-                long nodeDistance = vertexMap.get(node).distance;
-                if (nodeDistance < minDistance) {
-                    minNode = node;
-                    minDistance = nodeDistance;
-                }
-            }
-
-            nodeList.remove(minNode);
-
-            for (BranchDirection neighborBranch : minNode.getBranchDirections()) {
-
-                if (neighborBranch.getBranch() != branchToAvoid) {
-                    Node neighborNode = neighborBranch.getBranch().getOppositeBoundaryNode(minNode);
-                    if (nodeList.contains(neighborNode)) {
-
-                        long alt = minDistance + neighborBranch.getBranch().getElements().size();
-                        DijkstraVertex neighborVertex = vertexMap.get(neighborNode);
-                        if (alt < neighborVertex.distance) {
-                            neighborVertex.distance = alt;
-                            neighborVertex.previous = minNode;
-                        }
-
-                    }
-                }
-            }
-        }
-
-
-        return vertexMap;
     }
 
 }

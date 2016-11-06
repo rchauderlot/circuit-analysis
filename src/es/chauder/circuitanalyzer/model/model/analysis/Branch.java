@@ -96,6 +96,18 @@ public class Branch {
 
     }
 
+    public Connector getFirstElementInTheBranchStartingFromNode(Node node) {
+
+        Connector oppositeElement = null;
+        if (node == getStart()) {
+            oppositeElement = getFirstElement();
+        } else if (node == getEnd()) {
+            oppositeElement = getLastElement();
+        }
+        return oppositeElement;
+
+    }
+
 
     Node start;
     Node end;
