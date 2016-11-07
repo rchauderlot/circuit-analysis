@@ -68,7 +68,7 @@ public class BranchGenerationTest {
 
     private void testBranchNumber(Circuit circuit, int branches) throws Exception {
 
-        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit);
+        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit, null);
         assert topology.getBranches().size() == branches;
 
 
@@ -122,7 +122,7 @@ public class BranchGenerationTest {
 
     private void testUnusedDevices(Circuit circuit, int unused) throws Exception {
 
-        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit);
+        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit, null);
         assert topology.getUnusedDevices().size() == unused;
 
     }
@@ -175,9 +175,9 @@ public class BranchGenerationTest {
 
     }
 
-    private void testUnusedWires(Circuit curcuit, int unused) throws Exception {
+    private void testUnusedWires(Circuit circuit, int unused) throws Exception {
 
-        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(curcuit);
+        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit, null);
         assert topology.getUnusedWires().size() == unused;
 
     }
@@ -242,7 +242,7 @@ public class BranchGenerationTest {
             }
         }
 
-        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit);
+        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit, null);
 
         int numOfTerminalInBranches = 0;
         for (Branch b : topology.getBranches()) {
@@ -319,7 +319,7 @@ public class BranchGenerationTest {
             }
         }
 
-        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit);
+        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit, null);
 
         int numOfWiresInBranches = 0;
         for (Branch b : topology.getBranches()) {

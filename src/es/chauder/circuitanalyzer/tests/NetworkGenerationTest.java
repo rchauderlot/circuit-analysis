@@ -71,7 +71,7 @@ public class NetworkGenerationTest {
 
     private void testNetworkNumber(Circuit circuit, int numberOfNetworks) throws Exception {
 
-        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit);
+        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit, null);
 
         int numOfGeneratedNetworks = 0;
         for (AnalysisGroup ag : topology.getAnalysisGroups()) {

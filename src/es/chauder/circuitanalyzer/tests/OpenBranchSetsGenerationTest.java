@@ -71,7 +71,7 @@ public class OpenBranchSetsGenerationTest {
 
     private void testOpenBranchNumber(Circuit circuit, int openBranches) throws Exception {
 
-        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit);
+        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit, null);
 
         int numOfOpenBranches = 0;
         for (AnalysisGroup ag : topology.getAnalysisGroups()) {

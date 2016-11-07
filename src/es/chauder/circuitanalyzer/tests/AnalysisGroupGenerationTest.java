@@ -68,7 +68,7 @@ public class AnalysisGroupGenerationTest {
 
     private void testNumberOfGroups(Circuit circuit, int groups) throws Exception {
 
-        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit);
+        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit, null);
         assert topology.getAnalysisGroups().size() == groups;
 
 
@@ -131,7 +131,7 @@ public class AnalysisGroupGenerationTest {
 
     private void testNumberOfBranchesInGroups(Circuit circuit) throws Exception {
 
-        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit);
+        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit, null);
 
         int numberOfBranchesInGroups = 0;
         for (AnalysisGroup ag : topology.getAnalysisGroups()) {

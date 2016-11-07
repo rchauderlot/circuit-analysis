@@ -166,7 +166,7 @@ public class FrequencyAnalysisGroupComputationGenerator {
         ComplexEquationVariable complexVariable = assignmentMap.getVariableForBranch(branchDirection.getBranch());
         if (complexVariable == null) {
             complexVariable = new ComplexEquationVariable(assignmentMap.getVariableCount());
-            assignmentMap.addVariableAndBranchEnd(complexVariable, branchDirection);
+            assignmentMap.addVariableAndBranchDirection(complexVariable, branchDirection);
         }
         return complexVariable;
     }
@@ -177,7 +177,7 @@ public class FrequencyAnalysisGroupComputationGenerator {
 
         boolean followingBranchEndDirection = true;
         if (branchDirection != null && branchDirection.getBranch() != null && complexVariable != null) {
-            followingBranchEndDirection = assignmentMap.getBranchEndForVariable(complexVariable) == branchDirection;
+            followingBranchEndDirection = assignmentMap.getBranchDirectionForVariable(complexVariable) == branchDirection;
         }
         return followingBranchEndDirection;
     }

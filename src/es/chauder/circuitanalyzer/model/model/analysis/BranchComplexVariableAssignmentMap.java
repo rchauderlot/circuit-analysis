@@ -12,27 +12,27 @@ public class BranchComplexVariableAssignmentMap {
 
     private Map<ComplexEquationVariable, BranchDirection> branchMap = new HashMap<>();
     private Map<BranchDirection, ComplexEquationVariable> complexEquationVariableMap = new HashMap<>();
-    private Map<Branch, ComplexEquationVariable> branchEndMap = new HashMap<>();
+    private Map<Branch, ComplexEquationVariable> branchDirectionMap = new HashMap<>();
 
-    public ComplexEquationVariable getVariableForBranchEnd(BranchDirection branch) {
+    public ComplexEquationVariable getVariableForBranchDirection(BranchDirection branch) {
 
         return complexEquationVariableMap.get(branch);
     }
 
-    public BranchDirection getBranchEndForVariable(ComplexEquationVariable variable) {
+    public BranchDirection getBranchDirectionForVariable(ComplexEquationVariable variable) {
 
         return branchMap.get(variable);
     }
 
     public ComplexEquationVariable getVariableForBranch(Branch branch) {
 
-        return branchEndMap.get(branch);
+        return branchDirectionMap.get(branch);
     }
 
-    public void addVariableAndBranchEnd(ComplexEquationVariable variable, BranchDirection branchDirection) {
+    public void addVariableAndBranchDirection(ComplexEquationVariable variable, BranchDirection branchDirection) {
         branchMap.put(variable, branchDirection);
         complexEquationVariableMap.put(branchDirection, variable);
-        branchEndMap.put(branchDirection.getBranch(), variable);
+        branchDirectionMap.put(branchDirection.getBranch(), variable);
     }
 
     public int getVariableCount() {

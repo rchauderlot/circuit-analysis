@@ -2,9 +2,13 @@ package es.chauder.circuitanalyzer.model.model.analysis;
 
 
 import es.chauder.circuitanalyzer.model.model.base.Connector;
+import es.chauder.circuitanalyzer.model.model.base.Device;
+import es.chauder.circuitanalyzer.model.model.base.Terminal;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rchauderlot on 1/12/15.
@@ -17,8 +21,32 @@ public class Branch {
 
     public void setElements(List<Connector> elements) {
         this.elements = elements;
+        updateDeviceMap(elements);
     }
 
+    private void updateDeviceMap(List<Connector> connectors) {
+        if (connectors != null) {
+            for (Connector connector : connectors) {
+                if (connector instanceof Terminal) {
+                    Terminal t = (Terminal) connector;
+                    if (deviceTerminalMap.get(t.getDevice()) == null) {
+                        deviceTerminalMap.put(t.getDevice(), t);
+                    }
+
+                }
+            }
+        } else {
+            deviceTerminalMap.clear();
+        }
+    }
+
+    /**
+     * It determines the device orientation in the branch
+     * @return
+     */
+    public Terminal getFirstDeviceTerminal(Device device) {
+        return deviceTerminalMap.get(device);
+    }
 
     public Connector getFirstElement() {
         Connector connector = null;
@@ -112,6 +140,6 @@ public class Branch {
     Node start;
     Node end;
     List<Connector> elements = new ArrayList<Connector>();
-
+    Map<Device, Terminal> deviceTerminalMap = new HashMap<Device, Terminal>();
 
 }

@@ -69,7 +69,7 @@ public class ClosedBranchSetsGenerationTest {
 
     private void testClosedBranchNumber(Circuit circuit, int closedBranches) throws Exception {
 
-        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit);
+        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit, null);
 
         int numOfClosedBranches = 0;
         for (AnalysisGroup ag : topology.getAnalysisGroups()) {

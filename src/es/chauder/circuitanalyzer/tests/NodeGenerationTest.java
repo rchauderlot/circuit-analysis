@@ -91,7 +91,7 @@ public class NodeGenerationTest {
 //        }
 
 
-        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit);
+        AnalysisTopology topology = AnalysisTopologyGenerator.createElectronicTopology(circuit, null);
 
         int numOfGeneratedNodes = 0;
         for (AnalysisGroup ag : topology.getAnalysisGroups()) {
